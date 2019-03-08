@@ -20,7 +20,7 @@ function range(from, to) {
 export default class DayView extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.calendarHeight = (props.end - props.start) * 100;
+    this.calendarHeight = (props.end - props.start) * 150;
     const width = props.width - LEFT_MARGIN;
     const packedEvents = populateEvents(props.events, width, props.start);
     let initPosition =
@@ -57,30 +57,33 @@ export default class DayView extends React.PureComponent {
   }
 
   _renderRedLine() {
-    const offset = 100;
+    const offset = 150;
     const { format24h } = this.props;
     const { width, styles } = this.props;
     const timeNowHour = moment().hour();
     const timeNowMin = moment().minutes();
-    return (
-      <View
-        key={`timeNow`}
-        style={[
-          styles.lineNow,
-          {
-            top:
-              offset * (timeNowHour - this.props.start) +
-              (offset * timeNowMin) / 60,
-            width: width - 20,
-          },
-        ]}
-      />
-    );
+    if (this.props.date.format('YYYY-MM-DD') == moment().format('YYYY-MM-DD')){
+        return (
+            <View
+                key={`timeNow`}
+                style={[
+                    styles.lineNow,
+                    {
+                        top:
+                            offset * (timeNowHour - this.props.start) +
+                            (offset * timeNowMin) / 60,
+                        width: width - 20,
+                    },
+                ]}
+            />
+        );
+    }
+    return null;
   }
 
   _renderLines() {
     const { format24h, start, end } = this.props;
-    const offset = this.calendarHeight / (end - start);
+    const offset = this.calendarHeight / ((end - start));
 
     return range(start, end + 1).map((i, index) => {
       let timeText;
@@ -146,8 +149,14 @@ export default class DayView extends React.PureComponent {
       };
 
       const eventColor = {
-        backgroundColor: event.color,
+        backgroundColor: event.color
       };
+      const eventTextColor = {
+          color: event.text_color
+      }
+      const eventBorderColor = {
+          borderColor: event.border_color
+      }
 
       // Fixing the number of lines for the event title makes this calculation easier.
       // However it would make sense to overflow the title to a new line if needed
@@ -159,25 +168,25 @@ export default class DayView extends React.PureComponent {
           onPress={() =>
             this._onEventTapped(this.props.events[event.index])
           }
-          key={i} style={[styles.event, style, event.color && eventColor]}
+          key={i} style={[styles.event, style, event.color && eventColor, event.border_color ? eventBorderColor : {} ]}
         >
           {this.props.renderEvent ? (
             this.props.renderEvent(event)
           ) : (
             <View>
-              <Text numberOfLines={1} style={styles.eventTitle}>
+              <Text numberOfLines={1} style={[styles.eventTitle, eventTextColor]}>
                 {event.title || 'Event'}
               </Text>
               {numberOfLines > 1 ? (
                 <Text
                   numberOfLines={numberOfLines - 1}
-                  style={[styles.eventSummary]}
+                  style={[styles.eventSummary, eventTextColor]}
                 >
                   {event.summary || ' '}
                 </Text>
               ) : null}
               {numberOfLines > 2 ? (
-                <Text style={styles.eventTimes} numberOfLines={1}>
+                <Text style={[styles.eventTimes, eventTextColor]} numberOfLines={1}>
                   {moment(event.start).format(formatTime)} -{' '}
                   {moment(event.end).format(formatTime)}
                 </Text>

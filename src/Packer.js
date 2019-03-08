@@ -1,6 +1,6 @@
 // @flow
 import moment from 'moment';
-const offset = 100;
+const offset = 150;
 
 function buildEvent(column, left, width, dayStart) {
   const startTime = moment(column.start);
@@ -49,7 +49,7 @@ function pack(columns, width, calculatedEvents, dayStart) {
     for (var j = 0; j < col.length; j++) {
       var colSpan = expand(col[j], i, columns);
       var L = (i / colLength) * width;
-      var W = (width * colSpan) / colLength - 10;
+      var W = (width * colSpan) / colLength - 5;
 
       calculatedEvents.push(buildEvent(col[j], L, W, dayStart));
     }
