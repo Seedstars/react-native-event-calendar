@@ -105,7 +105,7 @@ export default class EventCalendar extends React.Component {
                       {leftIcon}
                     </TouchableOpacity>
                     :
-                    null
+                    <View/>
                   }
                     <TouchableOpacity
                         onPress={this.props.calendarTapped}
@@ -123,7 +123,7 @@ export default class EventCalendar extends React.Component {
                       {rightIcon}
                     </TouchableOpacity>
                     :
-                    null
+                    <View/>
                   }
                 </View>
                 <DayView
