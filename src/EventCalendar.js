@@ -44,6 +44,7 @@ export default class EventCalendar extends React.Component {
         size: 30,
         initDate: new Date(),
         formatHeader: 'DD MMMM YYYY',
+        showHeaderArrows: true,
     };
 
     _getItemLayout(data, index) {
@@ -96,12 +97,16 @@ export default class EventCalendar extends React.Component {
         return (
             <View style={[this.styles.container, { width }]}>
                 <View style={this.styles.header}>
+                  {this.props.showHeaderArrows ?
                     <TouchableOpacity
-                        style={this.styles.arrowButton}
-                        onPress={this._previous}
+                      style={this.styles.arrowButton}
+                      onPress={this._previous}
                     >
-                        {leftIcon}
+                      {leftIcon}
                     </TouchableOpacity>
+                    :
+                    null
+                  }
                     <TouchableOpacity
                         onPress={this.props.calendarTapped}
                         style={this.styles.headerTouchableContainer}
@@ -110,12 +115,16 @@ export default class EventCalendar extends React.Component {
                             <Text style={this.styles.headerText}>{headerText}</Text>
                         </View>
                     </TouchableOpacity>
+                  {this.props.showHeaderArrows ?
                     <TouchableOpacity
-                        style={this.styles.arrowButton}
-                        onPress={this._next}
+                      style={this.styles.arrowButton}
+                      onPress={this._next}
                     >
-                        {rightIcon}
+                      {rightIcon}
                     </TouchableOpacity>
+                    :
+                    null
+                  }
                 </View>
                 <DayView
                     date={date}
