@@ -45,6 +45,7 @@ export default class EventCalendar extends React.Component {
         initDate: new Date(),
         formatHeader: 'DD MMMM YYYY',
         showHeaderArrows: true,
+        showHeader: true
     };
 
     _getItemLayout(data, index) {
@@ -96,36 +97,42 @@ export default class EventCalendar extends React.Component {
 
         return (
             <View style={[this.styles.container, { width }]}>
-                <View style={this.styles.header}>
-                  {this.props.showHeaderArrows ?
-                    <TouchableOpacity
-                      style={this.styles.arrowButton}
-                      onPress={this._previous}
-                    >
-                      {leftIcon}
-                    </TouchableOpacity>
-                    :
-                    <View/>
-                  }
-                    <TouchableOpacity
-                        onPress={this.props.calendarTapped}
-                        style={this.styles.headerTouchableContainer}
-                    >
-                        <View style={this.styles.headerTextContainer}>
-                            <Text style={this.styles.headerText}>{headerText}</Text>
+                {this.props.showHeader ?
+                    (
+                        <View style={this.styles.header}>
+                            {this.props.showHeaderArrows ?
+                                <TouchableOpacity
+                                style={this.styles.arrowButton}
+                                onPress={this._previous}
+                                >
+                                {leftIcon}
+                                </TouchableOpacity>
+                                :
+                                <View/>
+                            }
+                                <TouchableOpacity
+                                    onPress={this.props.calendarTapped}
+                                    style={this.styles.headerTouchableContainer}
+                                >
+                                    <View style={this.styles.headerTextContainer}>
+                                        <Text style={this.styles.headerText}>{headerText}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            {this.props.showHeaderArrows ?
+                                <TouchableOpacity
+                                style={this.styles.arrowButton}
+                                onPress={this._next}
+                                >
+                                {rightIcon}
+                                </TouchableOpacity>
+                                :
+                                <View/>
+                            }
                         </View>
-                    </TouchableOpacity>
-                  {this.props.showHeaderArrows ?
-                    <TouchableOpacity
-                      style={this.styles.arrowButton}
-                      onPress={this._next}
-                    >
-                      {rightIcon}
-                    </TouchableOpacity>
+                    )
                     :
-                    <View/>
-                  }
-                </View>
+                    (<View/>)
+                }
                 <DayView
                     date={date}
                     index={index}
